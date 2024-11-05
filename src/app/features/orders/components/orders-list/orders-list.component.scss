@@ -1,0 +1,23 @@
+.status-badge {
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-badge.closed {
+  background-color: #f44336; /* Красный для закрытых */
+}
+
+.status-badge.active {
+  background-color: #4caf50; /* Зеленый для активных */
+}
+
+.status-badge.pending {
+  background-color: #ff9800; /* Оранжевый для ожидающих */
+}
+
+.table {
+  box-shadow: none;
+}
