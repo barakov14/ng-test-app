@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { OrdersData } from "../../models/orders.model";
-import { ordersData } from "../../services/orders-data.service";
 import {
   MatCell,
   MatCellDef,

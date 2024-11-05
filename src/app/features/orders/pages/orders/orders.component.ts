@@ -3,12 +3,14 @@ import {OrdersListComponent} from "../../components/orders-list/orders-list.comp
 import {PaginationComponent} from "@app/shared/components/pagination/pagination.component";
 import {OrdersConfig, OrdersData} from "../../models/orders.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {map, shareReplay} from "rxjs";
+import {map, shareReplay, switchMap, tap} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatButton} from "@angular/material/button";
 import {OrdersDataService} from "../../services/orders-data.service";
 import {OrdersService} from "../../services/orders.service";
+import {withLoading} from "../../../../core/utils/operators/withLoading";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-orders',
@@ -17,7 +19,8 @@ import {OrdersService} from "../../services/orders.service";
     OrdersListComponent,
     PaginationComponent,
     AsyncPipe,
-    MatButton
+    MatButton,
+    MatProgressSpinner
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
@@ -33,40 +36,66 @@ export class OrdersComponent implements OnInit {
   private router = inject(Router)
   private destroyRef = inject(DestroyRef)
 
-
-
   private ordersConfig: OrdersConfig = {
     filters: {
-      currentPage: 1,
+      offset: 1,
       limit: 10
     }
   }
 
-  protected readonly currentPage$ = this.queryParams.pipe(
-    map((param): number => param['currentPage'])
+  loading = signal<boolean>(false)
+
+
+  public ordersList$ = this.queryParams.pipe(
+    tap(() => this.loading.set(true)),
+    tap(params => {
+      this.ordersConfig.filters = { ...params };
+    }),
+    switchMap(() =>
+      this.ordersService.getOrdersList(this.ordersConfig)
+    ),
+    tap(() => this.loading.set(false)),
+    takeUntilDestroyed(this.destroyRef)
   );
+
+
+
+  protected readonly currentPage$ = this.queryParams.pipe(
+    map((param): number => param['offset'])
+  );
+
   protected readonly limit$ = this.queryParams.pipe(
     map((param): number => param['limit'])
   );
 
 
 
+
+
   ngOnInit() {
     this.queryParams.pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe((params) => {
-      this.ordersConfig.filters = {...params};
-    })
+      tap((params) => {
+        this.ordersConfig.filters = { ...params };
+      }),
+      switchMap(() => this.ordersList$),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe();
   }
 
   onChangePage(page: number) {
-    this.ordersConfig.filters['currentPage'] = page;
+    this.ordersConfig.filters['offset'] = page;
     this.setQueryParams()
+    this.scrollToTop();
   }
 
   onChangeLimit(limit: number) {
     this.ordersConfig.filters['limit'] = limit;
     this.setQueryParams()
+    this.scrollToTop();
+  }
+
+  private scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private setQueryParams() {

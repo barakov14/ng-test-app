@@ -14,7 +14,7 @@ export class OrdersDataService {
       params = params.set(key, ordersConfig.filters[key]);
     });
 
-    return this.http.get<OrdersData>('/orders', { params })
+    return this.http.get<{ordersCount: number, orders: OrdersData[]}>('/orders', { params })
   }
 
   createOrder() {

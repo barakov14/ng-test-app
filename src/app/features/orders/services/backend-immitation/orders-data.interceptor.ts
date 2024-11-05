@@ -1,18 +1,22 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
-import { OrdersData } from '../models/orders.model';
+import { OrdersData } from '../../models/orders.model';
 import { delay, of, throwError } from 'rxjs';
-import {getOrdersFromLocalStorage, saveOrdersToLocalStorage} from "../utils/orders-data";
+import {getOrdersFromLocalStorage, saveOrdersToLocalStorage} from "../../utils/orders-data-storage";
+import {ordersData as ordersDataMock} from "./orders-data-mock";
 
-
-// Interceptor definition
 export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
-  const delayTime = 500;
+  const delayTime = 1000;
 
   const limitParam = req.params.get('limit');
   const offsetParam = req.params.get('offset');
 
   const limit = limitParam ? +limitParam : 10; // Convert to number or default to 10
   const offset = offsetParam ? +offsetParam : 0; // Convert to number or default to 0
+
+  // Initial load of orders from localStorage, if needed
+  if (!localStorage.getItem('orders')) {
+    saveOrdersToLocalStorage(ordersDataMock);
+  }
 
   // Retrieve orders from localStorage at the start of the request
   let ordersData = getOrdersFromLocalStorage();
@@ -21,7 +25,11 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.method === 'GET') {
     if (req.url.endsWith('/orders')) {
       const paginatedOrders = ordersData.slice(offset, offset + limit);
-      return of(new HttpResponse({ status: 200, body: paginatedOrders })).pipe(delay(delayTime));
+      const responseBody = {
+        orders: paginatedOrders,
+        ordersCount: ordersData.length // Общее количество заказов
+      };
+      return of(new HttpResponse({ status: 200, body: responseBody })).pipe(delay(delayTime));
     } else if (req.url.match(/\/orders\/\w+/)) {
       // GET ORDER BY ID
       const id = req.url.split('/').pop();
@@ -76,57 +84,3 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req);
 };
-
-// Initial load of orders from localStorage, if needed
-if (!localStorage.getItem('orders')) {
-  saveOrdersToLocalStorage([
-    {
-      id: 'MS20',
-      customerName: 'Jaskeerat Singh Sandhu',
-      customerSource: 'Metafold',
-      status: 'Closed',
-      orderCost: '₹17110',
-      createdAt: new Date('2021-12-11'),
-    },
-    {
-      id: 'MS21',
-      customerName: 'Jaskeerat Singh Sandhu',
-      customerSource: 'Metafold',
-      status: 'Active',
-      orderCost: '₹22147',
-      createdAt: new Date('2021-12-11'),
-    },
-    {
-      id: 'MS22',
-      customerName: 'Jaskeerat Singh Sandhu',
-      customerSource: 'Metafold',
-      status: 'Pending',
-      orderCost: '₹22147',
-      createdAt: new Date('2021-12-11'),
-    },
-    {
-      id: 'MS18',
-      customerName: 'Jaskeerat Singh Sandhu',
-      customerSource: 'Metafold',
-      status: 'Closed',
-      orderCost: '₹17110',
-      createdAt: new Date('2021-12-11'),
-    },
-    {
-      id: 'MS19',
-      customerName: 'Jaskeerat Singh Sandhu',
-      customerSource: 'Metafold',
-      status: 'Active',
-      orderCost: '₹17110',
-      createdAt: new Date('2021-12-11'),
-    },
-    {
-      id: 'MSQ26',
-      customerName: 'Jaskeerat Singh Sandhu',
-      customerSource: 'Metafold',
-      status: 'Pending',
-      orderCost: '₹22147',
-      createdAt: new Date('2021-12-14'),
-    },
-  ]);
-}
