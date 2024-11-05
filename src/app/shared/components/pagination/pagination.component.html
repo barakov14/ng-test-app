@@ -1,0 +1,29 @@
+<div class="container">
+  <button mat-icon-button (click)="onChangePage(currentPage - 1)" [disabled]="currentPage === 1">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <ng-container *ngFor="let page of getPages()">
+    <button mat-button
+            (click)="onChangePage(page)"
+            [ngClass]="{'active': currentPage === page}"
+            [disabled]="page === '...'">
+      <span *ngIf="page === '...'">{{ page }}</span>
+      <span *ngIf="page !== '...'">{{ page }}</span>
+    </button>
+  </ng-container>
+
+  <button mat-icon-button (click)="onChangePage(currentPage + 1)" [disabled]="currentPage === totalPages">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <div class="select">
+    <p>Items per page</p>
+    <mat-select [(value)]="limit" (selectionChange)="onChangeLimit($event)">
+      <mat-option value="10">10</mat-option>
+      <mat-option value="15">15</mat-option>
+      <mat-option value="25">25</mat-option>
+      <mat-option value="30">30</mat-option>
+    </mat-select>
+  </div>
+</div>
