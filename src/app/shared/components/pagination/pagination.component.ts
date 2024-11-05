@@ -23,21 +23,28 @@ import {FormsModule} from "@angular/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginationComponent {
-  private _currentPage: number = 1;
-
-
   @Input({ required: true })
   set currentPage(value: number | null) {
     this._currentPage = value ?? 1;
   }
+  @Input({ required: true })
+  set limit(value: number | null) {
+    this._limit = value ?? 10;
+  }
+
+  private _currentPage: number = 1;
+  private _limit: number = 10;
 
   get currentPage(): number {
-    return this._currentPage;
+    return Number(this._currentPage);
+  }
+  get limit(): number {
+    return Number(this._limit);
   }
 
 
+
   @Input({required: true}) totalPages: number = 0;
-  @Input() limit: number = 10;
 
   @Output() changePage = new EventEmitter<number>();
   @Output() changeLimit = new EventEmitter<number>();
@@ -88,4 +95,6 @@ export class PaginationComponent {
   onChangeLimit(event: MatSelectChange) {
     this.changeLimit.emit(event.value);
   }
+
+  protected readonly Number = Number;
 }

@@ -4,10 +4,11 @@
   </button>
 
   <ng-container *ngFor="let page of getPages()">
-    <button mat-button
+    <button mat-flat-button
             (click)="onChangePage(page)"
-            [ngClass]="{'active': currentPage === page}"
-            [disabled]="page === '...'">
+            [color]="page === currentPage ? 'primary' : 'default'"
+            [disabled]="page === '...'"
+    >
       <span *ngIf="page === '...'">{{ page }}</span>
       <span *ngIf="page !== '...'">{{ page }}</span>
     </button>

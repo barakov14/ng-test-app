@@ -1,7 +1,19 @@
 <div class="container">
-  <h1>Orders</h1>
+  <div class="header">
+    <h1>Orders</h1>
+    <button mat-flat-button color="primary">Create order</button>
+  </div>
   <div class="orders-list">
-    <app-orders-list />
+    <app-orders-list
+      [dataSource]="ordersData"
+    />
+    <app-pagination
+      [currentPage]="currentPage$ | async"
+      [limit]="limit$ | async"
+      [totalPages]="Math.ceil(this.ordersData.length / 10)"
+      (changePage)="onChangePage($event)"
+      (changeLimit)="onChangeLimit($event)"
+    />
   </div>
 
 </div>

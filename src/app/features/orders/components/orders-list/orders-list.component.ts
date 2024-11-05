@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import { OrdersData } from "../../models/orders.model";
 import { ordersData } from "../../services/orders-data.service";
 import {
@@ -38,11 +38,12 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     MatMenuItem
   ],
   templateUrl: './orders-list.component.html',
-  styleUrl: './orders-list.component.scss'
+  styleUrl: './orders-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrdersListComponent {
   displayedColumns: string[] = ['id', 'customer', 'orderCost', 'status', 'createdAt', 'actions'];
-  dataSource: OrdersData[] = ordersData
+  @Input({required: true}) dataSource!: OrdersData[]
 
   getStatusClass(status: string): string {
     switch (status) {

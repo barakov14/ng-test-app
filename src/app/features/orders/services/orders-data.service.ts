@@ -1,63 +1,30 @@
-import { Injectable } from '@angular/core';
-import {OrdersData} from "../models/orders.model";
+import {inject, Injectable} from '@angular/core';
+import {OrdersConfig, OrdersData} from "../models/orders.model";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OrdersDataService {
+  private http = inject(HttpClient)
 
 
+  getOrdersList(ordersConfig: OrdersConfig) {
+    let params = new HttpParams();
+
+    Object.keys(ordersConfig.filters).forEach((key) => {
+      params = params.set(key, ordersConfig.filters[key]);
+    });
+
+    return this.http.get<OrdersData>('/orders', { params })
+  }
+
+  createOrder() {
+
+  }
+
+
+
+  updateOrder() {
+
+  }
 
 }
-
-
-export const ordersData: OrdersData[] = [
-  {
-    id: 'MS20',
-    customerName: 'Jaskeerat Singh Sandhu',
-    customerSource: 'Metafold',
-    status: 'Closed',
-    orderCost: '₹17110',
-    createdAt: new Date('2021-12-11')
-  },
-  {
-    id: 'MS21',
-    customerName: 'Jaskeerat Singh Sandhu',
-    customerSource: 'Metafold',
-    status: 'Active',
-    orderCost: '₹22147',
-    createdAt: new Date('2021-12-11')
-  },
-  {
-    id: 'MS22',
-    customerName: 'Jaskeerat Singh Sandhu',
-    customerSource: 'Metafold',
-    status: 'Pending',
-    orderCost: '₹22147',
-    createdAt: new Date('2021-12-11')
-  },
-  {
-    id: 'MS18',
-    customerName: 'Jaskeerat Singh Sandhu',
-    customerSource: 'Metafold',
-    status: 'Closed',
-    orderCost: '₹17110',
-    createdAt: new Date('2021-12-11')
-  },
-  {
-    id: 'MS19',
-    customerName: 'Jaskeerat Singh Sandhu',
-    customerSource: 'Metafold',
-    status: 'Active',
-    orderCost: '₹17110',
-    createdAt: new Date('2021-12-11')
-  },
-  {
-    id: 'MSQ26',
-    customerName: 'Jaskeerat Singh Sandhu',
-    customerSource: 'Metafold',
-    status: 'Pending',
-    orderCost: '₹22147',
-    createdAt: new Date('2021-12-14')
-  }
-];
