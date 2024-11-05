@@ -24,13 +24,24 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
   // GET ORDERS
   if (req.method === 'GET') {
     if (req.url.endsWith('/orders')) {
-      const paginatedOrders = ordersData.slice(offset, offset + limit);
+      const searchTerm = req.params.get('searchTerm')?.toLowerCase() || '';
+
+      const filteredOrders = ordersData.filter(order =>
+        order.customerName.toLowerCase().includes(searchTerm) ||
+        order.customerSource.toLowerCase().includes(searchTerm)
+      );
+
+      const paginatedOrders = filteredOrders.slice(offset, offset + limit);
+
       const responseBody = {
         orders: paginatedOrders,
-        ordersCount: ordersData.length // Общее количество заказов
+        ordersCount: filteredOrders.length
       };
+
       return of(new HttpResponse({ status: 200, body: responseBody })).pipe(delay(delayTime));
-    } else if (req.url.match(/\/orders\/\w+/)) {
+    }
+
+    else if (req.url.match(/\/orders\/\w+/)) {
       // GET ORDER BY ID
       const id = req.url.split('/').pop();
       const order = ordersData.find(order => order.id === id);

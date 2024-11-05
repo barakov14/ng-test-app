@@ -1,6 +1,11 @@
 <div class="container">
   <div class="header">
-    <h1>Orders</h1>
+    <div class="header__item">
+      <h1>Orders</h1>
+      <div class="search-term">
+        <app-order-search-term [formControl]="searchTermControl" />
+      </div>
+    </div>
     <button mat-flat-button color="primary">Create order</button>
   </div>
   @if(loading()) {
@@ -14,8 +19,9 @@
         [dataSource]="ordersData.orders"
       />
       <app-pagination
-        [currentPage]="currentPage$ | async"
-        [limit]="limit$ | async"
+        class="pagination"
+        [currentPage]="(currentPage$ | async) ?? 1"
+        [limit]="(limit$ | async) ?? 10"
         [totalPages]="Math.ceil(ordersData.ordersCount / 10)"
         (changePage)="onChangePage($event)"
         (changeLimit)="onChangeLimit($event)"

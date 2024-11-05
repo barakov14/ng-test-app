@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import { OrdersData } from "../../models/orders.model";
 import {
   MatCell,
@@ -43,6 +43,12 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 export class OrdersListComponent {
   displayedColumns: string[] = ['id', 'customer', 'orderCost', 'status', 'createdAt', 'actions'];
   @Input({required: true}) dataSource!: OrdersData[]
+
+  @Output() openViewEditDialog = new EventEmitter<OrdersData>();
+
+  onRowClick(data: OrdersData) {
+    this.openViewEditDialog.emit(data);
+  }
 
   getStatusClass(status: string): string {
     switch (status) {

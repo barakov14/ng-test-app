@@ -1,0 +1,11 @@
+<div class="search-container">
+  <span class="search-icon">🔍</span>
+  <input
+    type="text"
+    placeholder="Поиск"
+    class="search-input"
+    [value]="value"
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+  />
+</div>

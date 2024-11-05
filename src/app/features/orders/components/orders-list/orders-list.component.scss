@@ -1,23 +1,79 @@
+.table-container {
+  overflow-x: auto; // Allow horizontal scrolling for smaller screens
+  padding: 0 8px; // Add padding to avoid edge collisions
+}
+
+.table {
+  width: 100%; // Ensure the table takes full width
+  box-shadow: none;
+}
+.row:hover {
+  cursor: pointer;
+  transition: 0.2s ease-in;
+  background-color: #e0e0e0;
+}
+
 .status-badge {
   color: #fff;
-  padding: 2px 8px;
+  padding: 2px 6px; // Reduced padding for smaller screens
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 10px; // Smaller font size for better fit
   font-weight: bold;
 }
 
 .status-badge.closed {
-  background-color: #f44336; /* Красный для закрытых */
+  background-color: #f44336; /* Red for closed */
 }
 
 .status-badge.active {
-  background-color: #4caf50; /* Зеленый для активных */
+  background-color: #4caf50; /* Green for active */
 }
 
 .status-badge.pending {
-  background-color: #ff9800; /* Оранжевый для ожидающих */
+  background-color: #ff9800; /* Orange for pending */
 }
 
-.table {
-  box-shadow: none;
+/* Responsive styles */
+@media (max-width: 600px) {
+  .mat-header-cell, .mat-cell {
+    font-size: 10px; // Smaller font size for compact view
+    padding: 8px 4px; // Less padding for cells
+  }
+
+  .customer-name {
+    font-weight: bold; // Keep customer names bold
+    white-space: nowrap; // Prevent text wrapping
+    overflow: hidden; // Hide overflow
+    text-overflow: ellipsis; // Show ellipsis for overflow
+  }
+
+  .customer-source {
+    font-size: 8px; // Smaller font size for the source
+    white-space: nowrap; // Prevent text wrapping
+    overflow: hidden; // Hide overflow
+    text-overflow: ellipsis; // Show ellipsis for overflow
+  }
+
+  .status-badge {
+    font-size: 9px; // Adjust badge font size for small screens
+    padding: 2px 4px; // Adjust badge padding
+  }
+
+  .mat-icon-button {
+    width: 40px; // Fixed width for the button
+    height: 40px; // Fixed height for better touch target
+    padding: 0; // Remove default padding
+  }
+
+  // Adjust the table row to stack elements vertically if needed
+  .mat-row {
+    display: flex;
+    flex-direction: column; // Stack rows vertically
+    align-items: flex-start; // Align items to the start
+    padding: 8px 0; // Add vertical padding for touch
+  }
+
+  .mat-row:last-child {
+    margin-bottom: 16px; // Margin for last row
+  }
 }
