@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, forwardRef, inject } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, inject} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -13,6 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderSearchTermComponent implements ControlValueAccessor {
   private readonly cdr = inject(ChangeDetectorRef);

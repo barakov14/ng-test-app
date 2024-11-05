@@ -6,7 +6,7 @@
         <app-order-search-term [formControl]="searchTermControl" />
       </div>
     </div>
-    <button mat-flat-button color="primary">Create order</button>
+    <button mat-flat-button color="primary" (click)="onOpenViewEditDialog()">Create order</button>
   </div>
   @if(loading()) {
     <div class="loading-shade">
@@ -17,6 +17,7 @@
     @if(ordersList$ | async; as ordersData) {
       <app-orders-list
         [dataSource]="ordersData.orders"
+        (openViewEditDialog)="onOpenViewEditDialog($event)"
       />
       <app-pagination
         class="pagination"

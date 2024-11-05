@@ -3,16 +3,17 @@ import {OrdersListComponent} from "../../components/orders-list/orders-list.comp
 import {PaginationComponent} from "@app/shared/components/pagination/pagination.component";
 import {OrdersConfig, OrdersData} from "../../models/orders.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {debounceTime, filter, map, shareReplay, startWith, switchMap, tap} from "rxjs";
+import {debounceTime, map, shareReplay, startWith, switchMap, tap} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatButton} from "@angular/material/button";
 import {OrdersDataService} from "../../services/orders-data.service";
 import {OrdersService} from "../../services/orders.service";
-import {withLoading} from "../../../../core/utils/operators/withLoading";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {OrderSearchTermComponent} from "../../components/order-search-term/order-search-term.component";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
+import {OrderViewEditComponent} from "../../components/order-view-edit/order-view-edit.component";
 
 @Component({
   selector: 'app-orders',
@@ -39,6 +40,8 @@ export class OrdersComponent implements OnInit {
 
   private router = inject(Router)
   private destroyRef = inject(DestroyRef)
+  private dialog = inject(MatDialog)
+
   private ordersConfig: OrdersConfig = {
     filters: {
       offset: 1,
@@ -97,8 +100,16 @@ export class OrdersComponent implements OnInit {
     this.scrollToTop();
   }
 
-  openViewEditDialog() {
-
+  onOpenViewEditDialog(data?: OrdersData) {
+    this.dialog
+      .open(OrderViewEditComponent, {data, hasBackdrop: true})
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res: {data: OrdersData, mode: 'create' | 'edit'}) => {
+        if(res) {
+          console.log(res)
+        }
+      })
   }
 
   private scrollToTop() {

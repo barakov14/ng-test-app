@@ -1,1 +1,58 @@
-<p>order-view-edit works!</p>
+<div class="header">
+  <div class="header__item">
+    <h1 mat-dialog-title>{{ mode() === 'edit' ? 'Create Order' : 'Order Details' }}
+      @if(mode() === 'edit') {
+        Order Edit
+      } @else if (data) {
+        Create Order
+      } @else {
+        Order Details
+      }
+    </h1>
+    @if(data) {
+      <div [ngClass]="getStatusClass(data.status)" class="status-badge">
+        {{ data.status }}
+      </div>
+    }
+  </div>
+  <div style="gap: 0.5rem">
+    @if(data) {
+      <button mat-icon-button (click)="mode.set('edit')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    }
+    <button mat-icon-button (click)="cancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Customer Name</mat-label>
+      <input matInput formControlName="customerName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Customer Source</mat-label>
+      <input matInput formControlName="customerSource" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Order Cost</mat-label>
+      <input matInput formControlName="orderCost" type="text" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Created At</mat-label>
+      <input matInput formControlName="createdAt" [matDatepicker]="picker" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">Save</button>
+</div>

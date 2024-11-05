@@ -1,0 +1,38 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+}
+mat-dialog-title {
+  font-size: 1.5rem;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.status-badge {
+  color: #fff;
+  padding: 2px 6px; // Reduced padding for smaller screens
+  border-radius: 4px;
+  font-size: 10px; // Smaller font size for better fit
+  font-weight: bold;
+}
+
+.status-badge.closed {
+  background-color: #f44336; /* Red for closed */
+}
+
+.status-badge.active {
+  background-color: #4caf50; /* Green for active */
+}
+
+.status-badge.pending {
+  background-color: #ff9800; /* Orange for pending */
+}
