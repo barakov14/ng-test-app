@@ -1,72 +1,67 @@
 <div class="table-container">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
-
     <!-- ID Column -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
     </ng-container>
 
     <!-- Customer Column -->
     <ng-container matColumnDef="customer">
-      <th mat-header-cell *matHeaderCellDef> Customer </th>
+      <th mat-header-cell *matHeaderCellDef>Customer</th>
       <td mat-cell *matCellDef="let element">
-        <div class="customer-name">{{element.customerName}}</div>
-        <div class="customer-source">From {{element.customerSource}}</div>
+        <div class="customer-name">{{ element.customerName }}</div>
+        <div class="customer-source">From {{ element.customerSource }}</div>
       </td>
     </ng-container>
 
     <!-- Order Cost Column -->
     <ng-container matColumnDef="orderCost">
-      <th mat-header-cell *matHeaderCellDef> Order Cost </th>
-      <td mat-cell *matCellDef="let element"> {{element.orderCost}} </td>
+      <th mat-header-cell *matHeaderCellDef>Order Cost</th>
+      <td mat-cell *matCellDef="let element">{{ element.orderCost }}</td>
     </ng-container>
 
     <!-- Status Column -->
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <th mat-header-cell *matHeaderCellDef>Status</th>
       <td mat-cell *matCellDef="let element">
         <span [ngClass]="getStatusClass(element.status)" class="status-badge">
-          {{element.status}}
+          {{ element.status }}
         </span>
       </td>
     </ng-container>
 
     <!-- Created At Column -->
     <ng-container matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef> Created At </th>
+      <th mat-header-cell *matHeaderCellDef>Created At</th>
       <td mat-cell *matCellDef="let element">
-        <div>{{element.createdAt | date: 'dd MMMM, yyyy'}}</div>
+        <div>{{ element.createdAt | date: 'dd MMMM, yyyy' }}</div>
       </td>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> </th>
+      <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="More options">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="More options"
+        >
           <mat-icon>more_vert</mat-icon>
         </button>
 
         <mat-menu #menu="matMenu">
-          <button
-            mat-menu-item
-            (click)="onRowClick(element)"
-          >
-            Edit
+          <button mat-menu-item (click)="onRowClick(element)">Edit</button>
+          <button mat-menu-item (click)="onDeleteByOrderId(element.id)">
+            Delete
           </button>
-          <button
-            mat-menu-item
-            (click)="onDeleteByOrderId(element.id)"
-          >Delete</button>
         </mat-menu>
       </td>
     </ng-container>
 
     <!-- Header and Row Definitions -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row *matRowDef="let row; columns: displayedColumns;"
-    ></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>

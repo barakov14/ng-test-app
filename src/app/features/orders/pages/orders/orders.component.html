@@ -6,34 +6,36 @@
         <app-order-search-term [formControl]="searchTermControl" />
       </div>
     </div>
-    <button mat-flat-button color="primary" (click)="onOpenViewEditDialog()">Create order</button>
+    <button mat-flat-button color="primary" (click)="onOpenViewEditDialog()">
+      Create order
+    </button>
   </div>
-  @if(loading()) {
+  @if (loading()) {
     <div class="loading-shade">
       <mat-spinner></mat-spinner>
     </div>
   }
   <div class="orders-list">
-    @if(ordersList$ | async; as ordersData) {
+    @if (ordersList$ | async; as ordersData) {
       <app-orders-list
         [dataSource]="ordersData.orders"
         (openViewEditDialog)="onOpenViewEditDialog($event)"
         (deleteByOrderId)="onDeleteOrderById($event)"
       />
-      @if(ordersData.ordersCount && (limit$ | async)) {
+      @if (ordersData.ordersCount && (limit$ | async)) {
         <app-pagination
           class="pagination"
-          [currentPage]="((currentOffset$ | async) ?? 0) / ((limit$ | async) ?? 10) + 1"
+          [currentPage]="
+            ((currentOffset$ | async) ?? 0) / ((limit$ | async) ?? 10) + 1
+          "
           [limit]="(limit$ | async) ?? 10"
-          [totalPages]="Math.ceil(ordersData.ordersCount / ((limit$ | async) ?? 10))"
+          [totalPages]="
+            Math.ceil(ordersData.ordersCount / ((limit$ | async) ?? 10))
+          "
           (changePage)="onChangePage($event)"
           (changeLimit)="onChangeLimit($event)"
         />
       }
-
-
-
     }
   </div>
-
 </div>

@@ -1071,4 +1071,4 @@ export const ordersDataMock = [
     orderCost: '$140.00',
     createdAt: new Date('2024-10-30'),
   },
-];
+]

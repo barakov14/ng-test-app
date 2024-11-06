@@ -30,7 +30,8 @@
 
 /* Responsive styles */
 @media (max-width: 600px) {
-  .mat-header-cell, .mat-cell {
+  .mat-header-cell,
+  .mat-cell {
     font-size: 10px; // Smaller font size for compact view
     padding: 8px 4px; // Less padding for cells
   }
