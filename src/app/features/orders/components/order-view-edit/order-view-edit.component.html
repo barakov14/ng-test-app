@@ -63,10 +63,10 @@
         formControlName="orderCost"
         type="text"
         mask="separator.2"
-        prefix="$"
+        prefix=" "
         thousandsSeparator=","
         [dropSpecialCharacters]="false"
-        placeholder="0"
+        placeholder="Order Cost"
       />
       <mat-error *ngIf="form.get('orderCost')?.hasError('required')">
         Order Cost is required

@@ -12,6 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideEnvironmentNgxMask({
       validation: false,
     }),
+
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([ordersDataInterceptor])),
