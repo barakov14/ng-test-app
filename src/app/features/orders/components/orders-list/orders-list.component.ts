@@ -52,6 +52,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu'
 export class OrdersListComponent {
   displayedColumns: string[] = [
     'id',
+    'title',
     'customer',
     'quantity',
     'orderCost',
@@ -59,7 +60,6 @@ export class OrdersListComponent {
     'createdAt',
     'totalCost',
     'actions',
-    'title'
   ]
   @Input({ required: true }) dataSource!: OrdersData[]
 

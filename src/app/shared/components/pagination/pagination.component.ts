@@ -5,7 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core'
-import { NgClass, NgForOf, NgIf } from '@angular/common'
+import { NgClass, NgIf } from '@angular/common'
 import { MatOption, MatSelect, MatSelectChange } from '@angular/material/select'
 import { MatIcon } from '@angular/material/icon'
 import { MatButton, MatIconButton } from '@angular/material/button'
@@ -16,7 +16,6 @@ import { MatButton, MatIconButton } from '@angular/material/button'
   imports: [
     NgClass,
     NgIf,
-    NgForOf,
     MatSelect,
     MatOption,
     MatIcon,

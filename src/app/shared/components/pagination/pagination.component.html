@@ -8,7 +8,7 @@
   >
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <ng-container *ngFor="let page of getPages()">
+  @for(page of getPages(); track page) {
     <button
       mat-icon-button
       (click)="onChangePage(Number(page))"
@@ -17,7 +17,7 @@
     >
       <span>{{ page }}</span>
     </button>
-  </ng-container>
+  }
 
   <button
     mat-icon-button
