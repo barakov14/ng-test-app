@@ -36,51 +36,46 @@ export class PaginationComponent {
   @Output() changeLimit = new EventEmitter<number>()
 
   getPages(): (number | string)[] {
-    const pages: (number | string)[] = []
+    const pages: (number | string)[] = [];
 
-    const totalPages = Number(this.totalPages)
-    const currentPage = Number(this.currentPage)
+    const totalPages = Number(this.totalPages);
+    const currentPage = Number(this.currentPage);
 
-    pages.push(1)
-
-    // Если общее количество страниц меньше или равно 3, добавляем все страницы
-    if (totalPages <= 3) {
-      for (let i = 2; i <= totalPages; i++) {
-        pages.push(i)
+    // Если totalPages меньше или равно 7, показываем все страницы
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
       }
-    } else if (totalPages <= 7) {
-      for (let i = 2; i <= totalPages; i++) {
-        pages.push(i)
+    } else {
+      pages.push(1); // Первая страница всегда
+
+      // Если текущая страница в начале
+      if (currentPage <= 4) {
+        for (let i = 2; i <= 5; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+      else if (currentPage >= totalPages - 3) {
+        pages.push('...');
+        for (let i = totalPages - 4; i < totalPages; i++) {
+          pages.push(Number(i));
+        }
+        pages.push(Number(totalPages));
+      }
+      else {
+        pages.push('...');
+        pages.push(Number(currentPage) - 1);
+        pages.push(Number(currentPage));
+        pages.push(Number(currentPage) + 1);
+        pages.push('...');
+        pages.push(Number(totalPages));
       }
     }
-    // Если текущая страница в начале
-    else if (currentPage <= 4) {
-      for (let i = 2; i <= 5; i++) {
-        pages.push(i)
-      }
-      pages.push('...')
-      pages.push(Number(totalPages))
-    }
-    // Если текущая страница в конце
-    else if (currentPage >= totalPages - 3) {
-      pages.push('...')
-      for (let i = totalPages - 4; i < totalPages; i++) {
-        pages.push(i)
-      }
-      pages.push(totalPages)
-    }
-    // Если текущая страница в середине
-    else {
-      pages.push('...')
-      pages.push(Number(currentPage) - 1)
-      pages.push(Number(currentPage))
-      pages.push(Number(currentPage) + 1)
-      pages.push('...')
-      pages.push(Number(totalPages))
-    }
-
-    return pages
+    return pages.map(page => (page === '...' ? page : Number(page)));
   }
+
 
   onChangePage(page: number | string): void {
     if (typeof page === 'number' && page >= 1 && page <= this.totalPages) {

@@ -22,7 +22,7 @@
         (openViewEditDialog)="onOpenViewEditDialog($event)"
         (deleteByOrderId)="onDeleteOrderById($event)"
       />
-      @if (ordersData.ordersCount && (limit$ | async)) {
+      @if (ordersData.ordersCount) {
         <app-pagination
           class="pagination"
           [currentPage]="

@@ -53,9 +53,11 @@ export class OrdersListComponent {
   displayedColumns: string[] = [
     'id',
     'customer',
+    'quantity',
     'orderCost',
     'status',
     'createdAt',
+    'totalCost',
     'actions',
   ]
   @Input({ required: true }) dataSource!: OrdersData[]

@@ -64,9 +64,16 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
       customerName: reqBody.customerName ?? 'Default Customer',
       customerSource: reqBody.customerSource ?? 'Default Source',
       status: !!reqBody.status ? reqBody.status : 'Pending',
-      orderCost: reqBody.orderCost ?? '0',
+
+      orderCost: (reqBody.orderCost ? parseFloat(reqBody.orderCost.replace('$', '')) : 0).toString(),
+
+      quantity: reqBody.quantity ?? 0,
+
+      totalCost: ((reqBody.orderCost ? parseFloat(reqBody.orderCost.replace('$', '')) : 0) * (reqBody.quantity ?? 0)).toString(),
+
       createdAt: reqBody.createdAt ?? new Date(),
-    }
+    };
+
 
     let ordersData = getOrdersFromLocalStorage()
 

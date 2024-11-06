@@ -2,14 +2,14 @@ export interface OrdersData {
   id: string
   customerName: string
   customerSource: string
-  status: string
+  status: "Active" | "Pending" | "Closed"
   orderCost: string
   createdAt: Date
+  quantity: number
+  totalCost: string
 }
 
 export interface OrdersConfig {
-  filters: {
-    [key: string]: string | number
-  }
+  filters: Record<string, string|number>;
   searchTerm: string
 }

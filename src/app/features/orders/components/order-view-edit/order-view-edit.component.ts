@@ -102,6 +102,7 @@ export class OrderViewEditComponent implements OnInit {
         [Validators.required, Validators.min(1)],
       ],
       status: [this.data?.status || ''],
+      quantity: [this.data?.quantity || ''],
       createdAt: [
         this.data?.createdAt ? new Date(this.data.createdAt) : new Date(), // Убедитесь, что date корректно передается и инициализируется
       ],

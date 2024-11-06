@@ -1,38 +1,38 @@
-.search-container {
+:host {
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 500px;
-  padding: 10px 16px; /* Increased padding for a Material feel */
-  border: 1px solid #e0e0e0; /* Light gray border */
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
   border-radius: 24px;
-  background-color: #fff; /* White background */
+  background-color: #fff;
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease;
 }
 
-.search-container:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Elevated shadow on hover */
-  transform: translateY(-1px); /* Slight lift effect */
+:host(:hover) {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
 }
 
 .search-icon {
-  margin-right: 12px; /* Adjusted spacing for better alignment */
-  color: rgba(0, 0, 0, 0.54); /* Material Design icon color */
-  font-size: 24px; /* Slightly larger icon for emphasis */
+  margin-right: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 24px;
 }
 
 .search-input {
   border: none;
   outline: none;
   flex: 1;
-  font-size: 16px; /* Standard font size */
-  padding: 8px 0; /* Padding for a clean look */
-  color: rgba(0, 0, 0, 0.87); /* Material Design text color */
+  font-size: 16px;
+  padding: 8px 0;
+  color: rgba(0, 0, 0, 0.87);
   transition: border-bottom 0.3s ease;
 }
 
 .search-input::placeholder {
-  color: rgba(0, 0, 0, 0.3); /* Light placeholder color */
+  color: rgba(0, 0, 0, 0.3);
 }

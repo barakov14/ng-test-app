@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  inject,
+  inject, OnInit,
   signal,
 } from '@angular/core'
 import { OrdersListComponent } from '../../components/orders-list/orders-list.component'
@@ -48,7 +48,7 @@ import { OrderViewEditComponent } from '../../components/order-view-edit/order-v
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [OrdersDataService, OrdersService],
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit{
   private queryParams = inject(ActivatedRoute).queryParams.pipe(
     shareReplay({ bufferSize: 1, refCount: true }),
   )
@@ -66,6 +66,7 @@ export class OrdersComponent {
     },
     searchTerm: '',
   }
+
 
   loading = signal<boolean>(false)
 
@@ -109,6 +110,10 @@ export class OrdersComponent {
     map((param): number => Number(param['limit'])),
     shareReplay({ bufferSize: 1, refCount: true }),
   )
+
+  ngOnInit() {
+    this.setQueryParams()
+  }
 
   onChangePage(data: { page: number; limit: number }) {
     this.ordersConfig.filters['offset'] = (data.page - 1) * data.limit
