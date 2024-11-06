@@ -22,12 +22,13 @@
       />
       <app-pagination
         class="pagination"
-        [currentPage]="(currentPage$ | async) ?? 1"
+        [currentPage]="((currentOffset$ | async) ?? 0) / ((limit$ | async) ?? 10) + 1"
         [limit]="(limit$ | async) ?? 10"
-        [totalPages]="Math.ceil(ordersData.ordersCount / 10)"
+        [totalPages]="Math.ceil(ordersData.ordersCount / ((limit$ | async) ?? 10))"
         (changePage)="onChangePage($event)"
         (changeLimit)="onChangeLimit($event)"
       />
+
     }
   </div>
 

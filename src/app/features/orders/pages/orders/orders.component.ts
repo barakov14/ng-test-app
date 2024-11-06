@@ -41,7 +41,7 @@ import {OrderViewEditComponent} from "../../components/order-view-edit/order-vie
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [OrdersDataService, OrdersService]
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent {
   private queryParams = inject(ActivatedRoute)
     .queryParams.pipe(shareReplay({bufferSize: 1, refCount: true}))
 
@@ -53,9 +53,10 @@ export class OrdersComponent implements OnInit {
 
   private ordersConfig: OrdersConfig = {
     filters: {
-      offset: 1,
+      offset: 0,
       limit: 10,
-    }
+    },
+    searchTerm: ''
   }
 
   loading = signal<boolean>(false)
@@ -80,7 +81,7 @@ export class OrdersComponent implements OnInit {
       ).pipe(
         tap((value) => {
           if (typeof value === 'string' || value === null) {
-            this.ordersConfig.filters['searchTerm'] = value ?? '';
+            this.ordersConfig['searchTerm'] = value ?? '';
           }
           // adding default value for search term filter if we get null
         }),
@@ -97,12 +98,12 @@ export class OrdersComponent implements OnInit {
 
 
 
-  protected readonly currentPage$ = this.queryParams.pipe(
-    map((param): number => param['offset'])
+  protected readonly currentOffset$ = this.queryParams.pipe(
+    map((param): number => Number(param['offset'])), shareReplay({bufferSize: 1, refCount: true})
   );
 
   protected readonly limit$ = this.queryParams.pipe(
-    map((param): number => param['limit'])
+    map((param): number => Number(param['limit'])), shareReplay({bufferSize: 1, refCount: true})
   );
 
 
@@ -110,15 +111,15 @@ export class OrdersComponent implements OnInit {
 
   }
 
-  onChangePage(page: number) {
-    this.ordersConfig.filters['offset'] = page;
-    this.setQueryParams()
+  onChangePage(data: { page: number, limit: number }) {
+    this.ordersConfig.filters['offset'] = (data.page - 1) * data.limit;
+    this.setQueryParams();
     this.scrollToTop();
   }
 
   onChangeLimit(limit: number) {
     this.ordersConfig.filters['limit'] = limit;
-    this.setQueryParams()
+    this.setQueryParams();
     this.scrollToTop();
   }
 
@@ -127,15 +128,17 @@ export class OrdersComponent implements OnInit {
       .open(OrderViewEditComponent, { data, hasBackdrop: true })
       .afterClosed()
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
         filter(Boolean), // Filter and skip on only data with value
         switchMap((res: { data: Partial<OrdersData>, mode: 'create' | 'edit' }) =>
           res.mode === 'create'
             ? this.ordersService.createOrder(res.data)
-            : of(null)
-        )
+            : this.ordersService.updateOrder(res.data),
+        ),
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe();
+      .subscribe(() => {
+        this.reload$.next()
+      });
   }
 
 

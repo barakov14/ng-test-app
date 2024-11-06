@@ -14,6 +14,8 @@ export class OrdersDataService {
       params = params.set(key, ordersConfig.filters[key]);
     });
 
+    params = params.set('searchTerm', ordersConfig.searchTerm);
+
     return this.http.get<{ordersCount: number, orders: OrdersData[]}>('/orders', { params })
   }
 
@@ -23,8 +25,11 @@ export class OrdersDataService {
 
 
 
-  updateOrder(id: string) {
-    return
+  updateOrder(data: Partial<OrdersData>) {
+    const {id, ...dataWithoutId} = data
+
+    console.log(data)
+    return this.http.put<void>(`/orders/${id}`, dataWithoutId)
   }
 
   deleteOrderById(id: string) {

@@ -10,5 +10,6 @@ export interface OrdersData {
 export interface OrdersConfig {
   filters: {
     [key: string]: string | number
-  }
+  },
+  searchTerm: string
 }

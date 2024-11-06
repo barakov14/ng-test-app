@@ -89,10 +89,10 @@ export class OrderViewEditComponent implements OnInit {
   }
 
   save() {
+
     this.dialogRef.close({
       // send form with data if it's edit, else if creating order send formData only
-      data: () => this.data ? {...this.form.getRawValue(), ...this.data} : this.form.getRawValue(),
-
+      data: this.data ? {...this.data, ...this.form.getRawValue()} : this.form.getRawValue(),
       // recognize if it's edit or create
       mode: this.data ? 'edit' : 'create'
     });

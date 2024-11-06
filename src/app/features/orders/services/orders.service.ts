@@ -26,4 +26,10 @@ export class OrdersService {
       tap(() => this.snackBar.open('Created succefully', 'OK'))
     )
   }
+
+  updateOrder(data: Partial<OrdersData>) {
+    return this.ordersDataService.updateOrder(data).pipe(
+      tap(() => this.snackBar.open('Updated succefully', 'OK'))
+    )
+  }
 }

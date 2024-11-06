@@ -1,23 +1,26 @@
 <div class="pagination-container">
-  <button mat-icon-button (click)="onChangePage(Number(currentPage) - 1)" [disabled]="currentPage === 1" aria-label="Previous Page">
+  <!-- Previous Button -->
+  <button mat-icon-button (click)="onChangePage(currentPage - 1)"
+          [disabled]="currentPage === 1" aria-label="Previous Page">
     <mat-icon>chevron_left</mat-icon>
   </button>
-
   <ng-container *ngFor="let page of getPages()">
     <button mat-icon-button
-            (click)="onChangePage(page)"
-            [color]="page === Number(currentPage) ? 'primary' : 'default'"
+            (click)="onChangePage(Number(page))"
+            [color]="page === currentPage ? 'primary' : 'default'"
             [disabled]="page === '...'">
       <span>{{ page }}</span>
     </button>
   </ng-container>
 
-  <button mat-icon-button (click)="onChangePage(Number(currentPage) + 1)" [disabled]="currentPage === totalPages" aria-label="Next Page">
+  <button mat-icon-button (click)="onChangePage(currentPage + 1)"
+          [disabled]="currentPage + 1 === totalPages" aria-label="Next Page">
     <mat-icon>chevron_right</mat-icon>
   </button>
 
   <div class="select-container">
-    <mat-select [(value)]="limit" (selectionChange)="onChangeLimit($event)" placeholder="Items per page">
+    <mat-select [(value)]="limit" (selectionChange)="onChangeLimit($event)"
+                placeholder="Items per page">
       <mat-option value="10">10</mat-option>
       <mat-option value="15">15</mat-option>
       <mat-option value="25">25</mat-option>

@@ -22,42 +22,53 @@ import {MatButton, MatIconButton} from "@angular/material/button";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginationComponent {
-  @Input({ required: true }) totalPages: number = 0;
-  @Input({ required: true }) currentPage: number = 1;
-  @Input({ required: true }) limit: number = 10;
+  @Input() totalPages: number = 0;
+  @Input() currentPage: number = 1;
+  @Input() limit: number = 10;
 
-  @Output() changePage = new EventEmitter<number>();
+  @Output() changePage = new EventEmitter<{ page: number, limit: number }>();
   @Output() changeLimit = new EventEmitter<number>();
 
-  getPages() {
+  getPages(): (number | string)[] {
     let pages: (number | string)[] = [];
-
+    const currentPage = this.currentPage
     pages.push(1);
 
     if (this.totalPages <= 7) {
       for (let i = 2; i <= this.totalPages; i++) {
         pages.push(i);
       }
-    } else if (this.currentPage <= 4) {
+    }
+
+    else if (currentPage <= 4) {
       for (let i = 2; i <= 5; i++) {
-        pages.push(Number(i));
+        pages.push(i);
       }
       pages.push('...');
-      pages.push(Number(this.totalPages));
-    } else if (this.currentPage >= this.totalPages - 3) {
-      // Case 2: Close to the end (show last few pages)
+      pages.push(this.totalPages);
+    }
+    // Case when currentPage is at the end and there are more than 7 total pages
+    else if (currentPage >= this.totalPages - 3) {
       pages.push('...');
       for (let i = this.totalPages - 4; i < this.totalPages; i++) {
-        pages.push(Number(i));
+        pages.push(i);
       }
-      pages.push(Number(this.totalPages));
-    } else {
+      pages.push(this.totalPages);
+    }
+    else {
       pages.push('...');
-      pages.push(Number(this.currentPage) - 1);
-      pages.push(Number(this.currentPage));
-      pages.push(Number(this.currentPage) + 1);
+      pages.push(currentPage - 1);
+      pages.push(currentPage);
+      pages.push(currentPage + 1);
       pages.push('...');
-      pages.push(Number(this.totalPages));
+      pages.push(this.totalPages);
+    }
+
+    if (this.totalPages <= 3) {
+      pages = [];
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
     }
 
     return pages;
@@ -65,17 +76,9 @@ export class PaginationComponent {
 
 
 
-
-
-
-
-
-
-
-
   onChangePage(page: number | string): void {
     if (typeof page === 'number' && page >= 1 && page <= this.totalPages) {
-      this.changePage.emit(page);
+      this.changePage.emit({page, limit: this.limit});
     }
   }
 

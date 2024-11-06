@@ -1,4 +1,4 @@
-export const ordersData = [
+export const ordersDataMock = [
   {
     id: 'MS100',
     customerName: 'John Doe',
