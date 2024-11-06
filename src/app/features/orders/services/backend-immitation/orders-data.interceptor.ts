@@ -19,27 +19,24 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   // Retrieve orders from localStorage at the start of the request
-
-  // GET ORDERS
   if (req.method === 'GET') {
     if (req.url.endsWith('/orders')) {
       const searchTerm = req.params.get('searchTerm')?.toLowerCase() || '';
 
       let ordersData = getOrdersFromLocalStorage();
 
-
       const filteredOrders = ordersData.filter(order =>
         order.customerName.toLowerCase().includes(searchTerm) ||
         order.customerSource.toLowerCase().includes(searchTerm)
       );
 
-      console.log(filteredOrders)
+      console.log(filteredOrders);
 
-      const startIndex = offset + 1;
+      // Correct start and end index for pagination
+      const startIndex = offset; // Use offset directly, no +1
       const endIndex = Math.min(startIndex + limit, filteredOrders.length); // Ensure we don't go beyond the array length
       const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
       console.log('paginatedOrders', paginatedOrders);
-
 
       const responseBody = {
         orders: paginatedOrders,
@@ -65,9 +62,8 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
     let ordersData = getOrdersFromLocalStorage();
 
-
     ordersData.push(newOrder);
-    console.log(ordersData)
+    console.log(ordersData);
     saveOrdersToLocalStorage(ordersData);
 
     return of(new HttpResponse({ status: 201, body: newOrder })).pipe(delay(delayTime));
@@ -75,11 +71,11 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
     // PUT ORDERS
     const id = req.url.split('/').pop();
 
-    let ordersData = getOrdersFromLocalStorage()
+    let ordersData = getOrdersFromLocalStorage();
 
     const index = ordersData.findIndex(order => order.id === id);
     if (index !== -1) {
-      console.log(req.body)
+      console.log(req.body);
       ordersData[index] = { ...ordersData[index], ...(req.body ?? {}) }; // Use ?? to check for null
       saveOrdersToLocalStorage(ordersData); // Save updated orders to localStorage
 
@@ -91,7 +87,7 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
     // DELETE ORDER
     const id = req.url.split('/').pop();
 
-    let ordersData = getOrdersFromLocalStorage()
+    let ordersData = getOrdersFromLocalStorage();
 
     const index = ordersData.findIndex(order => order.id === id);
     if (index !== -1) {
@@ -106,5 +102,3 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req);
 };
-
-

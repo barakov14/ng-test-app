@@ -17,14 +17,14 @@
           [disabled]="currentPage + 1 === totalPages" aria-label="Next Page">
     <mat-icon>chevron_right</mat-icon>
   </button>
+</div>
 
-  <div class="select-container">
-    <mat-select [(value)]="limit" (selectionChange)="onChangeLimit($event)"
-                placeholder="Items per page">
-      <mat-option value="10">10</mat-option>
-      <mat-option value="15">15</mat-option>
-      <mat-option value="25">25</mat-option>
-      <mat-option value="30">30</mat-option>
-    </mat-select>
-  </div>
+<div class="select-container">
+  <mat-select [(value)]="limit" (selectionChange)="onChangeLimit($event)"
+              placeholder="Items per page">
+    <mat-option value="10">10</mat-option>
+    <mat-option value="15">15</mat-option>
+    <mat-option value="25">25</mat-option>
+    <mat-option value="30">30</mat-option>
+  </mat-select>
 </div>

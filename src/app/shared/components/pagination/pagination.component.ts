@@ -31,48 +31,53 @@ export class PaginationComponent {
 
   getPages(): (number | string)[] {
     let pages: (number | string)[] = [];
-    const currentPage = this.currentPage
+
+    const totalPages = Number(this.totalPages)
+    const currentPage = Number(this.currentPage)
+
     pages.push(1);
 
-    if (this.totalPages <= 7) {
-      for (let i = 2; i <= this.totalPages; i++) {
+    // Если общее количество страниц меньше или равно 3, добавляем все страницы
+    if (totalPages <= 3) {
+      for (let i = 2; i <= totalPages; i++) {
         pages.push(i);
       }
     }
-
+    else if (totalPages <= 7) {
+      for (let i = 2; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    }
+    // Если текущая страница в начале
     else if (currentPage <= 4) {
       for (let i = 2; i <= 5; i++) {
         pages.push(i);
       }
       pages.push('...');
-      pages.push(this.totalPages);
+      pages.push(Number(totalPages));
     }
-    // Case when currentPage is at the end and there are more than 7 total pages
-    else if (currentPage >= this.totalPages - 3) {
+    // Если текущая страница в конце
+    else if (currentPage >= totalPages - 3) {
       pages.push('...');
-      for (let i = this.totalPages - 4; i < this.totalPages; i++) {
+      for (let i = totalPages - 4; i < totalPages; i++) {
         pages.push(i);
       }
-      pages.push(this.totalPages);
+      pages.push(totalPages);
     }
+    // Если текущая страница в середине
     else {
       pages.push('...');
-      pages.push(currentPage - 1);
-      pages.push(currentPage);
-      pages.push(currentPage + 1);
+      pages.push(Number(currentPage) - 1);
+      pages.push(Number(currentPage));
+      pages.push(Number(currentPage) + 1);
       pages.push('...');
-      pages.push(this.totalPages);
-    }
-
-    if (this.totalPages <= 3) {
-      pages = [];
-      for (let i = 1; i <= this.totalPages; i++) {
-        pages.push(i);
-      }
+      pages.push(Number(totalPages));
     }
 
     return pages;
   }
+
+
 
 
 

@@ -106,11 +106,6 @@ export class OrdersComponent {
     map((param): number => Number(param['limit'])), shareReplay({bufferSize: 1, refCount: true})
   );
 
-
-  ngOnInit() {
-
-  }
-
   onChangePage(data: { page: number, limit: number }) {
     this.ordersConfig.filters['offset'] = (data.page - 1) * data.limit;
     this.setQueryParams();
