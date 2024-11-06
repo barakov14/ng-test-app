@@ -111,13 +111,11 @@ export class OrderViewEditComponent implements OnInit {
 
     this.form.statusChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((status) => {
         this.isFormValid.set(status === 'VALID')
       })
 
     this.form.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.isFormDirty.set(this.form.dirty)
