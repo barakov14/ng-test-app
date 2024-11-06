@@ -23,6 +23,8 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
     if (req.url.endsWith('/orders')) {
       const searchTerm = req.params.get('searchTerm')?.toLowerCase() || '';
 
+      console.log('searchTerm', searchTerm)
+
       let ordersData = getOrdersFromLocalStorage();
 
       const filteredOrders = ordersData.filter(order =>
