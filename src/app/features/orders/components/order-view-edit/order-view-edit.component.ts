@@ -54,6 +54,8 @@ export class OrderViewEditComponent implements OnInit {
     effect(() => {
       if(this.mode() && this.form.disabled) {
         this.form.enable()
+      } else if(this.mode() === 'view' && this.form.enabled) {
+        this.form.disable()
       }
     });
   }
@@ -66,12 +68,6 @@ export class OrderViewEditComponent implements OnInit {
       status: [this.data?.status || ''],
       createdAt: [this.data?.createdAt || new Date()],
     });
-
-
-
-    if(this.mode() === 'view') {
-      this.form.disable()
-    }
   }
 
   getStatusClass(status: string): string {
@@ -93,8 +89,13 @@ export class OrderViewEditComponent implements OnInit {
   }
 
   save() {
-    this.dialogRef.close({data: this.form.getRawValue(), mode: this.data ? 'edit' : 'create'});
+    this.dialogRef.close({
+      // send form with data if it's edit, else if creating order send formData only
+      data: () => this.data ? {...this.form.getRawValue(), ...this.data} : this.form.getRawValue(),
+
+      // recognize if it's edit or create
+      mode: this.data ? 'edit' : 'create'
+    });
   }
 
-  protected readonly close = close;
 }

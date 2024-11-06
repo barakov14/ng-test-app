@@ -18,6 +18,7 @@
       <app-orders-list
         [dataSource]="ordersData.orders"
         (openViewEditDialog)="onOpenViewEditDialog($event)"
+        (deleteByOrderId)="onDeleteOrderById($event)"
       />
       <app-pagination
         class="pagination"

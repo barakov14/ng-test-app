@@ -17,14 +17,19 @@ export class OrdersDataService {
     return this.http.get<{ordersCount: number, orders: OrdersData[]}>('/orders', { params })
   }
 
-  createOrder() {
-
+  createOrder(data: Partial<OrdersData>) {
+    return this.http.post<void>('/orders', data)
   }
 
 
 
-  updateOrder() {
-
+  updateOrder(id: string) {
+    return
   }
+
+  deleteOrderById(id: string) {
+    return this.http.delete<void>(`/orders/${id}`)
+  }
+
 
 }

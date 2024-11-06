@@ -24,6 +24,8 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
   // GET ORDERS
   if (req.method === 'GET') {
     if (req.url.endsWith('/orders')) {
+      console.log('limit:', limit, 'offset:', offset);
+
       const searchTerm = req.params.get('searchTerm')?.toLowerCase() || '';
 
       const filteredOrders = ordersData.filter(order =>
@@ -95,3 +97,5 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req);
 };
+
+

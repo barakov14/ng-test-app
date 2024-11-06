@@ -3,7 +3,16 @@ import {OrdersListComponent} from "../../components/orders-list/orders-list.comp
 import {PaginationComponent} from "@app/shared/components/pagination/pagination.component";
 import {OrdersConfig, OrdersData} from "../../models/orders.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {debounceTime, map, shareReplay, startWith, switchMap, tap} from "rxjs";
+import {
+  debounceTime, filter,
+  map,
+  merge,
+  shareReplay,
+  startWith,
+  Subject,
+  switchMap,
+  tap
+} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatButton} from "@angular/material/button";
@@ -54,19 +63,37 @@ export class OrdersComponent implements OnInit {
   searchTermControl = new FormControl<string>('')
 
 
-  public ordersList$ = this.searchTermControl.valueChanges.pipe(
-    debounceTime(500),
-    startWith(''),
-    tap((value: string | null) => {
-      this.ordersConfig.filters['searchTerm'] = value ?? '';
-    }),
-    switchMap(() => {
-      this.loading.set(true);
-      return this.ordersService.getOrdersList(this.ordersConfig);
-    }),
-    tap(() => this.loading.set(false)),
-    takeUntilDestroyed(this.destroyRef)
+  private reload$ = new Subject<void>()
+
+
+  ordersList$ = this.queryParams.pipe(
+    tap((params) => {
+      this.ordersConfig.filters = { ...params };
+    }), // setting params before
+    switchMap(() =>
+      merge(
+        this.searchTermControl.valueChanges.pipe(
+          debounceTime(500),
+          startWith('')
+        ), // subscribing to value changes of search term
+        this.reload$ // we reload orders list get query if call method next()
+      ).pipe(
+        tap((value) => {
+          if (typeof value === 'string' || value === null) {
+            this.ordersConfig.filters['searchTerm'] = value ?? '';
+          }
+          // adding default value for search term filter if we get null
+        }),
+        switchMap(() => {
+          this.loading.set(true);
+          return this.ordersService.getOrdersList(this.ordersConfig);
+        }),
+        tap(() => this.loading.set(false)),
+      )
+    )
   );
+
+
 
 
 
@@ -78,14 +105,9 @@ export class OrdersComponent implements OnInit {
     map((param): number => param['limit'])
   );
 
+
   ngOnInit() {
-    this.queryParams.pipe(
-      tap((params) => {
-        this.ordersConfig.filters = { ...params };
-      }),
-      switchMap(() => this.ordersList$),
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe();
+
   }
 
   onChangePage(page: number) {
@@ -102,14 +124,27 @@ export class OrdersComponent implements OnInit {
 
   onOpenViewEditDialog(data?: OrdersData) {
     this.dialog
-      .open(OrderViewEditComponent, {data, hasBackdrop: true})
+      .open(OrderViewEditComponent, { data, hasBackdrop: true })
       .afterClosed()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res: {data: OrdersData, mode: 'create' | 'edit'}) => {
-        if(res) {
-          console.log(res)
-        }
-      })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        filter(Boolean), // Filter and skip on only data with value
+        switchMap((res: { data: Partial<OrdersData>, mode: 'create' | 'edit' }) =>
+          res.mode === 'create'
+            ? this.ordersService.createOrder(res.data)
+            : of(null)
+        )
+      )
+      .subscribe();
+  }
+
+
+  onDeleteOrderById(id: string) {
+    this.ordersService.deleteOrderById(id).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(() => {
+      this.reload$.next();
+    })
   }
 
   private scrollToTop() {

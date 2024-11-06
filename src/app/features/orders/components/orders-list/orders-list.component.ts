@@ -45,9 +45,14 @@ export class OrdersListComponent {
   @Input({required: true}) dataSource!: OrdersData[]
 
   @Output() openViewEditDialog = new EventEmitter<OrdersData>();
+  @Output() deleteByOrderId = new EventEmitter<string>();
 
   onRowClick(data: OrdersData) {
     this.openViewEditDialog.emit(data);
+  }
+
+  onDeleteByOrderId(id: string) {
+    this.deleteByOrderId.emit(id)
   }
 
   getStatusClass(status: string): string {

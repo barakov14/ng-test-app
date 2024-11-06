@@ -49,8 +49,16 @@
         </button>
 
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>Edit</button>
-          <button mat-menu-item>Delete</button>
+          <button
+            mat-menu-item
+            (click)="onRowClick(element)"
+          >
+            Edit
+          </button>
+          <button
+            mat-menu-item
+            (click)="onDeleteByOrderId(element.id)"
+          >Delete</button>
         </mat-menu>
       </td>
     </ng-container>
@@ -59,8 +67,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr
       mat-row *matRowDef="let row; columns: displayedColumns;"
-      (click)="onRowClick(row)"
-      class="row"
     ></tr>
   </table>
 </div>
