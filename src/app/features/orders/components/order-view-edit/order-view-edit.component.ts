@@ -92,6 +92,7 @@ export class OrderViewEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      title: ['', Validators.required],
       customerName: [
         this.data?.customerName || '',
         [Validators.required, Validators.minLength(3)],

@@ -59,6 +59,7 @@ export class OrdersListComponent {
     'createdAt',
     'totalCost',
     'actions',
+    'title'
   ]
   @Input({ required: true }) dataSource!: OrdersData[]
 

@@ -26,6 +26,13 @@
 <div mat-dialog-content>
   <form [formGroup]="form">
     <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+      <mat-error *ngIf="form.get('title')?.hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Customer Name</mat-label>
       <input matInput formControlName="customerName" />
       <mat-error *ngIf="form.get('customerName')?.hasError('required')">

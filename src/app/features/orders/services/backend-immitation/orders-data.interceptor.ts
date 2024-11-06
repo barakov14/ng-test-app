@@ -61,6 +61,7 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
     const newOrder: OrdersData = {
       id: `MS${Math.floor(Math.random() * 100)}`,
+      title: reqBody.title ?? 'Title',
       customerName: reqBody.customerName ?? 'Default Customer',
       customerSource: reqBody.customerSource ?? 'Default Source',
       status: !!reqBody.status ? reqBody.status : 'Pending',
