@@ -33,7 +33,8 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
       const filteredOrders = ordersData.filter(
         (order) =>
           order.customerName.toLowerCase().includes(searchTerm) ||
-          order.customerSource.toLowerCase().includes(searchTerm),
+          order.customerSource.toLowerCase().includes(searchTerm) ||
+          order.title.toLowerCase().includes(searchTerm)
       )
 
       console.log(filteredOrders)
