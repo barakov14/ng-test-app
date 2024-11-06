@@ -1,75 +1,73 @@
 .table-container {
-  overflow-x: auto; // Allow horizontal scrolling for smaller screens
-  padding: 0 8px; // Add padding to avoid edge collisions
+  overflow-x: auto;
+  padding: 0 8px;
 }
 
 .table {
-  width: 100%; // Ensure the table takes full width
+  width: 100%;
   box-shadow: none;
 }
 
 .status-badge {
   color: #fff;
-  padding: 2px 6px; // Reduced padding for smaller screens
+  padding: 2px 6px;
   border-radius: 4px;
-  font-size: 10px; // Smaller font size for better fit
+  font-size: 10px;
   font-weight: bold;
 }
 
 .status-badge.closed {
-  background-color: #f44336; /* Red for closed */
+  background-color: #f44336;
 }
 
 .status-badge.active {
-  background-color: #4caf50; /* Green for active */
+  background-color: #4caf50;
 }
 
 .status-badge.pending {
-  background-color: #ff9800; /* Orange for pending */
+  background-color: #ff9800;
 }
 
-/* Responsive styles */
 @media (max-width: 600px) {
   .mat-header-cell,
   .mat-cell {
-    font-size: 10px; // Smaller font size for compact view
-    padding: 8px 4px; // Less padding for cells
+    font-size: 10px;
+    padding: 8px 4px;
   }
 
   .customer-name {
-    font-weight: bold; // Keep customer names bold
-    white-space: nowrap; // Prevent text wrapping
-    overflow: hidden; // Hide overflow
-    text-overflow: ellipsis; // Show ellipsis for overflow
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .customer-source {
-    font-size: 8px; // Smaller font size for the source
-    white-space: nowrap; // Prevent text wrapping
-    overflow: hidden; // Hide overflow
-    text-overflow: ellipsis; // Show ellipsis for overflow
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .status-badge {
-    font-size: 9px; // Adjust badge font size for small screens
-    padding: 2px 4px; // Adjust badge padding
+    font-size: 9px;
+    padding: 2px 4px;
   }
 
   .mat-icon-button {
-    width: 40px; // Fixed width for the button
-    height: 40px; // Fixed height for better touch target
-    padding: 0; // Remove default padding
+    width: 40px;
+    height: 40px;
+    padding: 0;
   }
 
-  // Adjust the table row to stack elements vertically if needed
   .mat-row {
     display: flex;
-    flex-direction: column; // Stack rows vertically
-    align-items: flex-start; // Align items to the start
-    padding: 8px 0; // Add vertical padding for touch
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 0;
   }
 
   .mat-row:last-child {
-    margin-bottom: 16px; // Margin for last row
+    margin-bottom: 16px;
   }
 }

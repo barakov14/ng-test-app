@@ -19,20 +19,20 @@ mat-form-field {
 
 .status-badge {
   color: #fff;
-  padding: 2px 6px; // Reduced padding for smaller screens
+  padding: 2px 6px;
   border-radius: 4px;
-  font-size: 10px; // Smaller font size for better fit
+  font-size: 10px;
   font-weight: bold;
 }
 
 .status-badge.closed {
-  background-color: #f44336; /* Red for closed */
+  background-color: #f44336;
 }
 
 .status-badge.active {
-  background-color: #4caf50; /* Green for active */
+  background-color: #4caf50;
 }
 
 .status-badge.pending {
-  background-color: #ff9800; /* Orange for pending */
+  background-color: #ff9800;
 }

@@ -22,7 +22,7 @@
     "baseUrl": "./src",
     "paths": {
       "@app/shared/*": ["app/shared/*"],
-      "@app/orders": ["app/features/orders/pages"]
+      "@app/orders/*": ["app/features/orders/*"]
     }
   },
   "angularCompilerOptions": {
