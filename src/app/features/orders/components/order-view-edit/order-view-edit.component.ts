@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, effect, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -7,14 +16,21 @@ import {
   MatDialogTitle
 } from "@angular/material/dialog";
 import {OrdersData} from "../../models/orders.model";
-import {FormGroup, NonNullableFormBuilder, ReactiveFormsModule} from "@angular/forms";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatError, MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from "@angular/material/datepicker";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {provideNativeDateAdapter} from "@angular/material/core";
-import {NgClass} from "@angular/common";
+import {NgClass, NgIf, NgStyle} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {NgxMaskDirective} from "ngx-mask";
 
 @Component({
   selector: 'app-order-view-edit',
@@ -24,8 +40,7 @@ import {MatIcon} from "@angular/material/icon";
     ReactiveFormsModule,
     MatFormField,
     MatInput,
-    MatDatepickerToggle,
-    MatDatepicker,
+    MatDatepickerModule,
     MatDialogActions,
     MatButton,
     MatDatepickerInput,
@@ -33,7 +48,12 @@ import {MatIcon} from "@angular/material/icon";
     MatLabel,
     NgClass,
     MatIconButton,
-    MatIcon
+    MatIcon,
+    NgStyle,
+    MatHint,
+    NgIf,
+    NgxMaskDirective,
+    MatError
   ],
   templateUrl: './order-view-edit.component.html',
   styleUrl: './order-view-edit.component.scss',
@@ -41,32 +61,60 @@ import {MatIcon} from "@angular/material/icon";
   providers: [provideNativeDateAdapter()]
 })
 export class OrderViewEditComponent implements OnInit {
-  private dialogRef = inject(MatDialogRef)
-  protected data: OrdersData = inject(MAT_DIALOG_DATA)
-  private fb = inject(NonNullableFormBuilder)
-
+  private dialogRef = inject(MatDialogRef);
+  protected data: OrdersData = inject(MAT_DIALOG_DATA);
+  private fb = inject(NonNullableFormBuilder);
+  private destroyRef = inject(DestroyRef);
 
   form!: FormGroup;
-  mode: WritableSignal<'view' | 'edit'> = signal(this.data ? 'view': 'edit');
+  mode: WritableSignal<'view' | 'edit'> = signal(this.data ? 'view' : 'edit');
 
+  isFormValid = signal<boolean>(false);
+  isFormDirty = signal<boolean>(false);
 
   constructor() {
     effect(() => {
-      if(this.mode() && this.form.disabled) {
-        this.form.enable()
-      } else if(this.mode() === 'view' && this.form.enabled) {
-        this.form.disable()
+      if (this.mode() === 'edit' && this.form.disabled) {
+        this.form.enable();
+      } else if (this.mode() === 'view' && this.form.enabled) {
+        this.form.disable();
       }
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fb.group({
-      customerName: [this.data?.customerName || ''],
-      customerSource: [this.data?.customerSource || ''],
-      orderCost: [this.data?.orderCost || 0],
-      status: [this.data?.status || ''],
-      createdAt: [this.data?.createdAt || new Date()],
+      customerName: [
+        this.data?.customerName || '',
+        [Validators.required, Validators.minLength(3)]
+      ],
+      customerSource: [
+        this.data?.customerSource || '',
+        [Validators.required]
+      ],
+      orderCost: [
+        this.data?.orderCost || '',
+        [Validators.required, Validators.min(1)]
+      ],
+      status: [
+        this.data?.status || '',
+      ],
+      createdAt: [
+        this.data?.createdAt ? new Date(this.data.createdAt) : new Date(), // Убедитесь, что date корректно передается и инициализируется
+      ]
+    });
+
+
+    this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((status) => {
+      this.isFormValid.set(status === 'VALID');
+    });
+
+    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+      this.isFormDirty.set(this.form.dirty);
     });
   }
 
@@ -83,19 +131,14 @@ export class OrderViewEditComponent implements OnInit {
     }
   }
 
-
-  cancel() {
+  cancel(): void {
     this.dialogRef.close();
   }
 
-  save() {
-
+  save(): void {
     this.dialogRef.close({
-      // send form with data if it's edit, else if creating order send formData only
-      data: this.data ? {...this.data, ...this.form.getRawValue()} : this.form.getRawValue(),
-      // recognize if it's edit or create
+      data: this.data ? { ...this.data, ...this.form.getRawValue() } : this.form.getRawValue(),
       mode: this.data ? 'edit' : 'create'
     });
   }
-
 }

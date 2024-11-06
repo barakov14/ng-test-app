@@ -1,60 +1,72 @@
 <div class="header">
   <div class="header__item">
-    <h1 mat-dialog-title>{{ mode() === 'edit' ? 'Create Order' : 'Order Details' }}
-      @if(mode() === 'edit') {
-        Order Edit
-      } @else if (data) {
-        Create Order
-      } @else {
-        Order Details
-      }
-    </h1>
-    @if(data) {
+    <h1 mat-dialog-title>{{ mode() === 'edit' ? 'Create Order' : 'Order Details' }}</h1>
+    <div *ngIf="data">
       <div [ngClass]="getStatusClass(data.status)" class="status-badge">
         {{ data.status }}
       </div>
-    }
+    </div>
   </div>
   <div style="gap: 0.5rem">
-    @if(data && mode() === 'view') {
-      <button mat-icon-button (click)="mode.set('edit')">
-        <mat-icon>edit</mat-icon>
-      </button>
-    }
+    <button *ngIf="data && mode() === 'view'" mat-icon-button (click)="mode.set('edit')">
+      <mat-icon>edit</mat-icon>
+    </button>
     <button mat-icon-button (click)="cancel()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 </div>
+
 <div mat-dialog-content>
   <form [formGroup]="form">
-
     <mat-form-field appearance="outline">
       <mat-label>Customer Name</mat-label>
       <input matInput formControlName="customerName" />
+      <mat-error *ngIf="form.get('customerName')?.hasError('required')">
+        Customer Name is required
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Customer Source</mat-label>
       <input matInput formControlName="customerSource" />
+      <mat-error *ngIf="form.get('customerSource')?.hasError('required')">
+        Customer Source is required
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Order Cost</mat-label>
-      <input matInput formControlName="orderCost" type="text" />
+      <input
+        matInput
+        formControlName="orderCost"
+        type="text"
+        mask="separator.2"
+        prefix="$"
+        thousandsSeparator=","
+        [dropSpecialCharacters]="false"
+        placeholder="0"
+      />
+      <mat-error *ngIf="form.get('orderCost')?.hasError('required')">
+        Order Cost is required
+      </mat-error>
     </mat-form-field>
 
+
     <mat-form-field appearance="outline">
-      <mat-label>Created At</mat-label>
-      <input matInput formControlName="createdAt" [matDatepicker]="picker" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-label>Choose a date</mat-label>
+      <input matInput formControlName="createdAt" [matDatepicker]="picker">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+
   </form>
 </div>
-@if(mode() === 'edit') {
-  <div mat-dialog-actions>
-    <button mat-button (click)="cancel()">Cancel</button>
-    <button mat-flat-button color="primary" (click)="save()">Save</button>
+
+
+@if(mode() === 'edit' && isFormDirty()) {
+  <div mat-dialog-actions style="width: 100%; padding: 2rem">
+    <button mat-flat-button color="primary" (click)="save()" style="width: 100%" [disabled]="!isFormValid()">Save</button>
   </div>
 }
