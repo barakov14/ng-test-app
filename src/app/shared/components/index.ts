@@ -1,5 +1,3 @@
-import { PaginationComponent } from "./pagination/pagination.component";
+import { PaginationComponent } from './pagination/pagination.component'
 
-export {
-  PaginationComponent
-}
+export { PaginationComponent }

@@ -3,7 +3,7 @@ export interface OrdersData {
   title: string
   customerName: string
   customerSource: string
-  status: "Active" | "Pending" | "Closed"
+  status: 'Active' | 'Pending' | 'Closed'
   orderCost: string
   createdAt: Date
   quantity: number
@@ -11,6 +11,6 @@ export interface OrdersData {
 }
 
 export interface OrdersConfig {
-  filters: Record<string, string|number>;
+  filters: Record<string, string | number>
   searchTerm: string
 }

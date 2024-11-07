@@ -8,7 +8,7 @@
   >
     <mat-icon>chevron_left</mat-icon>
   </button>
-  @for(page of getPages(); track page) {
+  @for (page of getPages(); track page) {
     <button
       mat-icon-button
       (click)="onChangePage(Number(page))"

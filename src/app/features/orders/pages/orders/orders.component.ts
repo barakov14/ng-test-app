@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  inject, OnInit,
+  inject,
+  OnInit,
   signal,
 } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -23,10 +24,14 @@ import { MatButton } from '@angular/material/button'
 import { MatProgressSpinner } from '@angular/material/progress-spinner'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
-import {OrderSearchTermComponent, OrdersListComponent, OrderViewEditComponent} from "@app/feature/orders/components";
-import {PaginationComponent} from "@app/shared/components";
-import {OrdersDataService, OrdersService} from "@app/feature/orders/services";
-import {OrdersConfig, OrdersData} from "@app/feature/orders/models";
+import {
+  OrderSearchTermComponent,
+  OrdersListComponent,
+  OrderViewEditComponent,
+} from '@app/feature/orders/components'
+import { PaginationComponent } from '@app/shared/components'
+import { OrdersDataService, OrdersService } from '@app/feature/orders/services'
+import { OrdersConfig, OrdersData } from '@app/feature/orders/models'
 
 @Component({
   selector: 'app-orders',
@@ -45,7 +50,7 @@ import {OrdersConfig, OrdersData} from "@app/feature/orders/models";
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [OrdersDataService, OrdersService],
 })
-export class OrdersComponent implements OnInit{
+export class OrdersComponent implements OnInit {
   private queryParams = inject(ActivatedRoute).queryParams.pipe(
     shareReplay({ bufferSize: 1, refCount: true }),
   )
@@ -63,7 +68,6 @@ export class OrdersComponent implements OnInit{
     },
     searchTerm: '',
   }
-
 
   loading = signal<boolean>(false)
 

@@ -1,6 +1,3 @@
-import {OrdersConfig, OrdersData } from "./orders.model";
+import { OrdersConfig, OrdersData } from './orders.model'
 
-export {
-  OrdersData,
-  OrdersConfig
-}
+export { OrdersData, OrdersConfig }

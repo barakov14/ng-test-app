@@ -1,6 +1,6 @@
-import { getOrdersFromLocalStorage, saveOrdersToLocalStorage } from "./orders-data-storage";
-
-export {
+import {
   getOrdersFromLocalStorage,
-  saveOrdersToLocalStorage
-}
+  saveOrdersToLocalStorage,
+} from './orders-data-storage'
+
+export { getOrdersFromLocalStorage, saveOrdersToLocalStorage }

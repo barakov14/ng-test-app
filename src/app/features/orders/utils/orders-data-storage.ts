@@ -1,6 +1,5 @@
-
 // Utility function to get orders from localStorage
-import {OrdersData} from "@app/feature/orders/models";
+import { OrdersData } from '@app/feature/orders/models'
 
 export function getOrdersFromLocalStorage(): OrdersData[] {
   const orders = localStorage.getItem('orders')

@@ -35,46 +35,43 @@ export class PaginationComponent {
   @Output() changeLimit = new EventEmitter<number>()
 
   getPages(): (number | string)[] {
-    const pages: (number | string)[] = [];
+    const pages: (number | string)[] = []
 
-    const totalPages = Number(this.totalPages);
-    const currentPage = Number(this.currentPage);
+    const totalPages = Number(this.totalPages)
+    const currentPage = Number(this.currentPage)
 
     // Если totalPages меньше или равно 7, показываем все страницы
     if (totalPages <= 7) {
       for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
+        pages.push(i)
       }
     } else {
-      pages.push(1); // Первая страница всегда
+      pages.push(1) // Первая страница всегда
 
       // Если текущая страница в начале
       if (currentPage <= 4) {
         for (let i = 2; i <= 5; i++) {
-          pages.push(i);
+          pages.push(i)
         }
-        pages.push('...');
-        pages.push(totalPages);
-      }
-      else if (currentPage >= totalPages - 3) {
-        pages.push('...');
+        pages.push('...')
+        pages.push(totalPages)
+      } else if (currentPage >= totalPages - 3) {
+        pages.push('...')
         for (let i = totalPages - 4; i < totalPages; i++) {
-          pages.push(Number(i));
+          pages.push(Number(i))
         }
-        pages.push(Number(totalPages));
-      }
-      else {
-        pages.push('...');
-        pages.push(Number(currentPage) - 1);
-        pages.push(Number(currentPage));
-        pages.push(Number(currentPage) + 1);
-        pages.push('...');
-        pages.push(Number(totalPages));
+        pages.push(Number(totalPages))
+      } else {
+        pages.push('...')
+        pages.push(Number(currentPage) - 1)
+        pages.push(Number(currentPage))
+        pages.push(Number(currentPage) + 1)
+        pages.push('...')
+        pages.push(Number(totalPages))
       }
     }
-    return pages.map(page => (page === '...' ? page : Number(page)));
+    return pages.map((page) => (page === '...' ? page : Number(page)))
   }
-
 
   onChangePage(page: number | string): void {
     if (typeof page === 'number' && page >= 1 && page <= this.totalPages) {

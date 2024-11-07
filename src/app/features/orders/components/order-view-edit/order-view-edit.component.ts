@@ -38,7 +38,7 @@ import { NgClass, NgIf, NgStyle } from '@angular/common'
 import { MatIcon } from '@angular/material/icon'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { NgxMaskDirective } from 'ngx-mask'
-import {OrdersData} from "@app/feature/orders/models";
+import { OrdersData } from '@app/feature/orders/models'
 
 @Component({
   selector: 'app-order-view-edit',

@@ -2,8 +2,11 @@ import { HttpInterceptorFn, HttpResponse } from '@angular/common/http'
 import { delay, of, throwError } from 'rxjs'
 
 import { ordersDataMock } from './orders-data-mock'
-import {getOrdersFromLocalStorage, saveOrdersToLocalStorage} from "@app/feature/orders/utils";
-import {OrdersData} from "@app/feature/orders/models";
+import {
+  getOrdersFromLocalStorage,
+  saveOrdersToLocalStorage,
+} from '@app/feature/orders/utils'
+import { OrdersData } from '@app/feature/orders/models'
 
 export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
   const delayTime = 1000
@@ -32,7 +35,7 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
         (order: OrdersData) =>
           order.customerName.toLowerCase().includes(searchTerm) ||
           order.customerSource.toLowerCase().includes(searchTerm) ||
-          order.title.toLowerCase().includes(searchTerm)
+          order.title.toLowerCase().includes(searchTerm),
       )
 
       console.log(filteredOrders)
@@ -65,15 +68,21 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
       customerSource: reqBody.customerSource ?? 'Default Source',
       status: !!reqBody.status ? reqBody.status : 'Pending',
 
-      orderCost: (reqBody.orderCost ? parseFloat(reqBody.orderCost.replace('$', '')) : 0).toString(),
+      orderCost: (reqBody.orderCost
+        ? parseFloat(reqBody.orderCost.replace('$', ''))
+        : 0
+      ).toString(),
 
       quantity: reqBody.quantity ?? 0,
 
-      totalCost: ((reqBody.orderCost ? parseFloat(reqBody.orderCost.replace('$', '')) : 0) * (reqBody.quantity ?? 0)).toString(),
+      totalCost: (
+        (reqBody.orderCost
+          ? parseFloat(reqBody.orderCost.replace('$', ''))
+          : 0) * (reqBody.quantity ?? 0)
+      ).toString(),
 
       createdAt: reqBody.createdAt ?? new Date(),
-    };
-
+    }
 
     let ordersData = getOrdersFromLocalStorage()
 
