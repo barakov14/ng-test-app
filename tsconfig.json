@@ -21,8 +21,12 @@
     "lib": ["ES2022", "dom"],
     "baseUrl": "./src",
     "paths": {
-      "@app/shared/*": ["app/shared/*"],
-      "@app/orders": ["app/features/orders/pages"]
+      "@app/shared/components": ["app/shared/components"],
+      "@app/feature/orders/*": ["app/features/orders/*"],
+      "@app/feature/orders/components": ["app/features/orders/components"],
+      "@app/feature/orders/utils": ["app/features/orders/utils"],
+      "@app/feature/orders/services": ["app/features/orders/services"],
+      "@app/core/components": ["app/core/components"]
     }
   },
   "angularCompilerOptions": {

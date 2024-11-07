@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core'
 import { OrdersDataService } from './orders-data.service'
-import { OrdersConfig, OrdersData } from '../models/orders.model'
 import { shareReplay, tap } from 'rxjs'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import {OrdersConfig, OrdersData} from "@app/feature/orders/models";
 
 @Injectable()
 export class OrdersService {

@@ -5,7 +5,6 @@ import {
   Input,
   Output,
 } from '@angular/core'
-import { OrdersData } from '../../models/orders.model'
 import {
   MatCell,
   MatCellDef,
@@ -22,6 +21,7 @@ import { DatePipe, NgClass } from '@angular/common'
 import { MatIcon } from '@angular/material/icon'
 import { MatIconButton } from '@angular/material/button'
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu'
+import {OrdersData} from "@app/feature/orders/models";
 
 @Component({
   selector: 'app-orders-list',

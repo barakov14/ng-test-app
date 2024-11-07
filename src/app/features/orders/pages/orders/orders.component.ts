@@ -5,9 +5,6 @@ import {
   inject, OnInit,
   signal,
 } from '@angular/core'
-import { OrdersListComponent } from '../../components/orders-list/orders-list.component'
-import { PaginationComponent } from '@app/shared/components/pagination/pagination.component'
-import { OrdersConfig, OrdersData } from '../../models/orders.model'
 import { ActivatedRoute, Router } from '@angular/router'
 import {
   debounceTime,
@@ -23,13 +20,13 @@ import {
 import { AsyncPipe } from '@angular/common'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { MatButton } from '@angular/material/button'
-import { OrdersDataService } from '../../services/orders-data.service'
-import { OrdersService } from '../../services/orders.service'
 import { MatProgressSpinner } from '@angular/material/progress-spinner'
-import { OrderSearchTermComponent } from '../../components/order-search-term/order-search-term.component'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
-import { OrderViewEditComponent } from '../../components/order-view-edit/order-view-edit.component'
+import {OrderSearchTermComponent, OrdersListComponent, OrderViewEditComponent} from "@app/feature/orders/components";
+import {PaginationComponent} from "@app/shared/components";
+import {OrdersDataService, OrdersService} from "@app/feature/orders/services";
+import {OrdersConfig, OrdersData} from "@app/feature/orders/models";
 
 @Component({
   selector: 'app-orders',

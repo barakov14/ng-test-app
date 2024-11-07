@@ -1,4 +1,4 @@
-import { OrdersData } from "../../models/orders.model";
+import {OrdersData} from "@app/feature/orders/models";
 
 function generateRandomOrders(count: number): OrdersData[] {
   const statuses: ('Pending' | 'Closed' | 'Active')[] = ['Pending', 'Closed', 'Active'];

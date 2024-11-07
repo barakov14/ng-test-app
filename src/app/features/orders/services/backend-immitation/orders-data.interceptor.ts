@@ -1,11 +1,9 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http'
-import { OrdersData } from '../../models/orders.model'
 import { delay, of, throwError } from 'rxjs'
-import {
-  getOrdersFromLocalStorage,
-  saveOrdersToLocalStorage,
-} from '../../utils/orders-data-storage'
+
 import { ordersDataMock } from './orders-data-mock'
+import {getOrdersFromLocalStorage, saveOrdersToLocalStorage} from "@app/feature/orders/utils";
+import {OrdersData} from "@app/feature/orders/models";
 
 export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
   const delayTime = 1000
@@ -31,7 +29,7 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
       const ordersData = getOrdersFromLocalStorage()
 
       const filteredOrders = ordersData.filter(
-        (order) =>
+        (order: OrdersData) =>
           order.customerName.toLowerCase().includes(searchTerm) ||
           order.customerSource.toLowerCase().includes(searchTerm) ||
           order.title.toLowerCase().includes(searchTerm)
@@ -92,7 +90,7 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
     let ordersData = getOrdersFromLocalStorage()
 
-    const index = ordersData.findIndex((order) => order.id === id)
+    const index = ordersData.findIndex((order: OrdersData) => order.id === id)
     if (index !== -1) {
       console.log(req.body)
       ordersData[index] = { ...ordersData[index], ...(req.body ?? {}) } // Use ?? to check for null
@@ -113,7 +111,7 @@ export const ordersDataInterceptor: HttpInterceptorFn = (req, next) => {
 
     const ordersData = getOrdersFromLocalStorage()
 
-    const index = ordersData.findIndex((order) => order.id === id)
+    const index = ordersData.findIndex((order: OrdersData) => order.id === id)
     if (index !== -1) {
       ordersData.splice(index, 1)
       saveOrdersToLocalStorage(ordersData) // Save updated orders to localStorage

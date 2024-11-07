@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
-import { OrdersConfig, OrdersData } from '../models/orders.model'
 import { HttpClient, HttpParams } from '@angular/common/http'
+import {OrdersConfig, OrdersData} from "@app/feature/orders/models";
 
 @Injectable()
 export class OrdersDataService {
